@@ -5,7 +5,7 @@ const hexTable = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C
 const hexToRGB = hex => {
     
     if (hex.length !== 6) {
-        return 'You entered an incorrect format, please enter your value like this "RRGGBB" without any #';
+        return 'You entered an incorrect format, please enter your value like this "RRGGBB" without any #, if you tried to enter an RGB value, use the correct format "RRR, GGG, BBB" including commas';
     }
 
     //separates R, G an B 
@@ -28,7 +28,7 @@ const hexToRGB = hex => {
 //converts a color in RGB format XXX, XXX, XXX to a color in hex format #RRGGBB (without the #)
 const RGBToHex = rgb => {
 
-    //deletes whitespaces just in case the user used too much spaces or no spaces, or commas
+    //deletes whitespaces and commas
     rgb = rgb.replace(/\s/g, '').replace(/,/g, '');
 
     if (rgb.length !== 9) {
@@ -75,11 +75,11 @@ const RGBToHex = rgb => {
 //auto-detects the format and executes the corresponding function 
 const autoConversion = color => {
     
-    if (color.length === 6) {
-        return hexToRGB(color);
+    if (color.includes(',')) {
+        return RGBToHex(color);
     }
 
     else {
-        return RGBToHex(color);
+        return hexToRGB(color);
     }
 }
