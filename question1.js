@@ -20,6 +20,7 @@ let groupArray = array => {
     let precedentNum = undefined;
     //initialize the final array that will be returned 
     let groupedArray = [];
+ 
     array.forEach((num, index) => {
         let arrayedValues = array.filter((num) => {return num === array[index]});
         let lengthArrayedValues = arrayedValues.length;
@@ -41,7 +42,7 @@ let groupArray = array => {
 let cleanOrderArray = array => {
 
     let onlyNumArray = onlyNum(array);
-    console.log("onlyNumArray", onlyNumArray)
+    
     let onlyStringArray = onlyString(array);
 
     let orderedNumArray = orderArray(onlyNumArray);
