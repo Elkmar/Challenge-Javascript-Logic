@@ -1,85 +1,74 @@
-//Hex table to be able to convert hexadecimal in decimal
-const hexTable = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'];
+/* Question 3: Write a function that converts HEX to RGB. Then Make that function auto-dect the formats so that if you enter HEX color format it returns RGB and if you enter RGB color format it returns HEX. */
 
-//converts a color in hex format #RRGGBB (without the #) to the RGB format R, G, B
-const hexToRGB = hex => {
-    
+const hexToRGB = (hex) => {
+    //We delete # if it has been entered 
+    if (hex[0] === "#") {
+        hex = hex.slice(1);
+    }
+
     if (hex.length !== 6) {
-        return 'You entered an incorrect format, please enter your value like this "RRGGBB" without any #, if you tried to enter an RGB value, use the correct format "RRR, GGG, BBB" including commas';
+        return "The value is not correct";
     }
 
-    //separates R, G an B 
-    rHex = hex.slice(0, 2);
-    gHex = hex.slice(2, 4);
-    bHex = hex.slice(4, 6);
+    let hexR = hex.slice(0, 2);
+    let hexG = hex.slice(2, 4);
+    let hexB = hex.slice(4);
 
-    //converts each hex value in a decimal format
-    const convert = string => {
-        return hexTable.indexOf(string[0]) * 16**1 + hexTable.indexOf(string[1]) * 16**0;
-    }
+    let R = parseInt(hexR, 16);
+    let G = parseInt(hexG, 16);
+    let B = parseInt(hexB, 16);
 
-    rRGB = convert(rHex);
-    gRGB = convert(gHex);
-    bRGB = convert(bHex);
-
-    return `${rRGB}, ${gRGB}, ${bRGB}`;
+    return `#${hex} is ${R}, ${G}, ${B} in RGB`
 }
 
-//converts a color in RGB format XXX, XXX, XXX to a color in hex format #RRGGBB (without the #)
-const RGBToHex = rgb => {
-
-    //deletes whitespaces and commas
-    rgb = rgb.replace(/\s/g, '').replace(/,/g, '');
-
-    if (rgb.length !== 9) {
-        return `You entered an incorrect format, please ensure that you use the correct format "RRR, GGG, BBB"`;
+const RGBToHex = (r, g, b) => {
+    //We check if the value entered are correct (0 < x < 255)
+    if (((r.length || g.length || b.length) > 3) || ((r || g || b) > 255) || ((r || g || b) < 0) ) {
+        return "The value entered is not correct"
     }
 
-    //separates R, G an B 
-    rRGB = rgb.slice(0, 3);
-    gRGB = rgb.slice(3, 6);
-    bRGB = rgb.slice(6, 9);
+    //We take every value and convert it to and Hex 
+    let rHex = r.toString(16);
+    let gHex = g.toString(16);
+    let bHex = b.toString(16);
 
-    //reverses a string
-    reverseString = str => {
-        return str.split('').reverse().join('');
-    }
-
-    //converts each decimal value into an hex format
-    const convert = string => {
-
-        let dividend = 1;
-        let result = '';
-        let quotient = string;
-        
-        while (dividend >= 1 ) {
-            dividend = Math.trunc(quotient / 16);
-            let remainder = quotient % 16;
-            result += hexTable[remainder];
-            quotient = dividend;
+    //add a 0 at the beginning of an hex if needed
+    const padding = (hex) => {
+        let hexPadded = hex;
+        if (hex.length === 1) {
+            hexPadded = hex.padStart(2, "0");
         }
-        //Add a 0 in case the value is < 15
-        if (result.length < 2) {
-            result += '0';
-        }
-        return reverseString(result)
+        return hexPadded;
     }
 
-    rHEX = convert(rRGB);
-    gHEX = convert(gRGB);
-    bHEX = convert(bRGB);
+    rHex = padding(rHex);
+    gHex = padding(gHex);
+    bHex = padding(bHex);
 
-    return(rHEX + gHEX + bHEX);
+    return `${r}, ${g}, ${b} is #${rHex}${gHex}${bHex} in HEX`;
 }
 
-//auto-detects the format and executes the corresponding function 
-const autoConversion = color => {
-    
-    if (color.includes(',')) {
-        return RGBToHex(color);
-    }
-
-    else {
-        return hexToRGB(color);
-    }
+const autoDetectAndConvert = (value) => {
+    //If the value entered contains #, it's a hex, and if it has a length of 6 and doesn't include ",", it's an hex too 
+    if ((value[0] === "#") || (value.length === 6 && !value.includes(","))) {
+        return hexToRGB(value);
+    } else if (value.includes(",") && value.includes(" ")) { //if it includes "," and " ", it's an RGB but we need to clean it in order to be accepted in RGBTohex 
+        value = value.replaceAll(" ", "");
+        let rgb = value.split(",");
+        let r = Number(rgb[0]);
+        let g = Number(rgb[1]);
+        let b = Number(rgb[2]);
+        return RGBToHex(r, g, b);
+    } else if (value.includes(",") || value.includes(" ")) {
+        let rgb;
+        if (value.includes(",")) {
+            rgb = value.split(",");
+        } else if (value.includes(" ")) {
+            rgb = value.split(" ");
+        }
+        let r = Number(rgb[0]);
+        let g = Number(rgb[1]);
+        let b = Number(rgb[2]);
+        return RGBToHex(r, g, b);
+    } 
 }
