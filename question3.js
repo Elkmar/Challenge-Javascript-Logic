@@ -48,7 +48,7 @@ const RGBToHex = (r, g, b) => {
     return `${r}, ${g}, ${b} is #${rHex}${gHex}${bHex} in HEX`;
 }
 
-const autoDetectAndConvert = (value) => {
+const answer = (value) => {
     //If the value entered contains #, it's a hex, and if it has a length of 6 and doesn't include ",", it's an hex too 
     if ((value[0] === "#") || (value.length === 6 && !value.includes(","))) {
         return hexToRGB(value);
