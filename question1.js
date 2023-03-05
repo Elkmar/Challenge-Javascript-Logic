@@ -7,7 +7,7 @@ const orderInAscendingOrderArray = array => {
     array.sort((a, b) => a-b);
 };
 
-//This function takes an arrray and returns is with the value repeated grouped in sub-arrays
+//This function takes an array and returns is with the values repeated grouped in sub-arrays
 const groupSameValuesInSubArrays = (array) => {
     //an empty array that will contain the final result
     let result = [];
@@ -15,10 +15,10 @@ const groupSameValuesInSubArrays = (array) => {
     let valueTreated = [];
 
     const createSubArrayAndPush = (valueToCheck, index) => {
-        //we check if the array includes a value multiple times not counting itself and if the value has not been treated, and if it's not included multiple times and not treated, just push it in the result array
+        //we check if the value has not been treated and if the array includes a value multiple times not counting itself, if it's not, just push it in the result array
         if (!valueTreated.includes(valueToCheck)) {
             if (array.includes(valueToCheck, index +1)) {
-                //create un array that contains the same values, add it to the result and add the value to the value treated
+                //create un array that contains the same values, add it to the result and add the value to the treated values
                 let sameValuesGrouped = array.filter( value => {
                     return (value === valueToCheck);
                 })
@@ -68,3 +68,5 @@ const answer = (array) => {
     let separatedAndGroupedArray = groupSameValuesInSubArrays(separatedArray);
     return separatedAndGroupedArray;
 }
+
+const test
